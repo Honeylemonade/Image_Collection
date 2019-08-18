@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserImageMapper">
+    <!--resultMap映射,一般只需要resultMap-->
+    <resultMap id="userImageResultMap" type="UserImage">
+        <result column="pk_user_id" property="userId"/>
+        <result column="pk_image_id" property="imageId"/>
+    </resultMap>
+    <resultMap id="imageResultMap" type="Image">
+        <result column="pk_id" property="id"/>
+        <result column="image_path" property="imagePath"/>
+    </resultMap>
+    <insert id="insertUserImage">
+        insert INTo image_collection_user_image VALUES(#{userId},#{imageId});
+    </insert>
+    <select id="getUserImagesByUserId" resultMap="imageResultMap">
+    SELECT
+	image_collection_image.*
+FROM
+	image_collection_user_image,
+	image_collection_image
+WHERE
+	image_collection_image.pk_id = image_collection_user_image.pk_image_id
+	AND image_collection_user_image.pk_user_id =#{userId};
+</select>
+</mapper>
